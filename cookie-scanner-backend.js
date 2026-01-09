@@ -31,12 +31,12 @@ app.post('/api/scan', async (req, res) => {
         // Launch browser
         browser = await puppeteer.launch({
             headless: 'new',
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-gpu'
-            ]
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-gpu'
+                ]
         });
 
         const page = await browser.newPage();
