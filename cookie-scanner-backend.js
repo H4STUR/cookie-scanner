@@ -3,7 +3,7 @@ const cors = require('cors');
 const puppeteer = require('puppeteer');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -384,6 +384,15 @@ function generatePrivacyAnalysis(stats, cookies) {
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+app.get('/', (req, res) => {
+  res.status(200).json({
+    ok: true,
+    service: 'cookie-scanner-api',
+    endpoints: ['GET /api/health', 'POST /api/scan'],
+  });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Cookie Scanner API running on http://localhost:${PORT}`);
