@@ -1,0 +1,27 @@
+{
+  "name": "cookie-scanner-backend",
+  "version": "1.0.0",
+  "description": "Real-time cookie scanner backend service",
+  "main": "cookie-scanner-backend.js",
+  "scripts": {
+    "start": "node cookie-scanner-backend.js",
+    "dev": "nodemon cookie-scanner-backend.js"
+  },
+  "keywords": [
+    "cookie",
+    "scanner",
+    "privacy",
+    "gdpr",
+    "compliance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "puppeteer": "^24.34.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
