@@ -1,0 +1,16 @@
+DirectoryIndex disabled
+RewriteEngine On
+
+# Proxy when HTTPS is ON
+RewriteCond %{HTTPS} on
+RewriteRule ^$ http://127.0.0.1:12777/ [P,L]
+
+RewriteCond %{HTTPS} on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:12777/$1 [P,L]
+
+# Force HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

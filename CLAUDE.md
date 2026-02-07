@@ -22,7 +22,7 @@ docker run -p 3000:3000 cookie-scanner
 
 ## Architecture
 
-**Single-file backend**: The entire application lives in `cookie-scanner-backend.js` (~400 lines).
+**Single-file backend**: The entire application lives in `app.js` (~400 lines).
 
 ### API Endpoints
 - `POST /api/scan` - Main scanning endpoint. Accepts `{ url: string }`, launches headless Chrome, navigates to URL, accepts cookie banners, extracts cookies/storage, returns privacy analysis

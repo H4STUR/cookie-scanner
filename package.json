@@ -1,11 +1,11 @@
 {
-  "name": "cookie-scanner-backend",
+  "name": "app",
   "version": "1.0.0",
   "description": "Real-time cookie scanner backend service",
-  "main": "cookie-scanner-backend.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node cookie-scanner-backend.js",
-    "dev": "nodemon cookie-scanner-backend.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [
     "cookie",
