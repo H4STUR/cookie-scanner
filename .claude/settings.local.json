@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm audit *)",
+      "Bash(node -e \"require\\('./app.js'\\)\")",
+      "Bash(Start-Sleep -Milliseconds 500)",
+      "Bash(Start-Sleep -Seconds 3)",
+      "Bash(Get-Content \"C:\\\\Users\\\\NATEHI~1\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--Projects-WEB-cookie-scanner\\\\97c796d3-638c-491b-88c9-f48d6a58a418\\\\tasks\\\\b5ajfzvfn.output\" -ErrorAction SilentlyContinue)",
+      "PowerShell(cd \"d:\\\\Projects\\\\WEB\\\\cookie scanner\"; $proc = Start-Process node -ArgumentList \"app.js\" -PassThru -NoNewWindow; Start-Sleep -Seconds 3; Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue; Write-Host \"Exit: $\\($proc.ExitCode\\)\")",
+      "PowerShell(cd \"d:\\\\Projects\\\\WEB\\\\cookie scanner\"; node --check app.js; Write-Host \"Exit code: $LASTEXITCODE\")"
+    ]
+  }
+}
