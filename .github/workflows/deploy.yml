@@ -1,0 +1,48 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare deployment package
+        run: |
+          mkdir deploy
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            ./ deploy/
+
+      - name: Deploy files via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 222
+          ssh_private_key: ''
+          local_path: './deploy/*'
+          remote_path: '/home/agares/apps/cookie-scanner/'
+          sftp_only: true
+
+      - name: Run post-deploy commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 222
+          script: |
+            cd /home/agares/apps/cookie-scanner
+            npm install --omit=dev
+            pm2 reload cookie-scanner || pm2 start app.js --name cookie-scanner
