@@ -412,6 +412,6 @@ function generatePrivacyAnalysis(stats, cookies) {
 
 // --- Start ---
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '127.0.0.1', () => {
     log.info({ port: PORT }, 'cookie-scanner-api started');
 });
