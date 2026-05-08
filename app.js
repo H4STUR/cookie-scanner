@@ -1,7 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 const pino = require('pino');
 
 const log = pino({ level: process.env.LOG_LEVEL || 'info' });
@@ -71,8 +72,10 @@ app.post('/api/scan', requireInternalSecret, async (req, res) => {
         log.info({ url }, 'scan started');
 
         browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath(),
+            headless: chromium.headless,
         });
         openBrowsers.add(browser);
 
