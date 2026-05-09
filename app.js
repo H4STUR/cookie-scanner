@@ -218,6 +218,7 @@ function normalizeCookie(cookie, mainHostname) {
         duration,
         durationDays,
         expiresAt,
+        expiresTimestamp: (cookie.expires && cookie.expires !== -1) ? cookie.expires : null,
         httpOnly: cookie.httpOnly,
         secure: cookie.secure,
         sameSite: cookie.sameSite || 'None',
