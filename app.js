@@ -141,8 +141,13 @@ app.get('/', (req, res) => {
 async function runScan(browser, url, parsedUrl) {
     const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(30000);
+
+    await page.evaluateOnNewDocument(() => {
+        Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+    });
+
     await page.setUserAgent(
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
     );
 
     const requestedDomains = new Set();
@@ -155,7 +160,16 @@ async function runScan(browser, url, parsedUrl) {
     await page.goto(url, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 30000 });
 
     await page.evaluate(() => {
-        const texts = ['Accept', 'Accept all', 'I agree', 'Akceptuj', 'Zaakceptuj', 'Zgadzam', 'Akceptuję'];
+        const byId = document.getElementById('cc-accept');
+        if (byId) { byId.click(); return; }
+
+        const texts = [
+            'Accept all', 'Accept All', 'Accept All Cookies', 'Allow all', 'Allow all cookies',
+            'Allow All', 'Allow All Cookies', 'I agree', 'Agree', 'Agree & Continue',
+            'Consent', 'OK', 'Got it', 'Continue', 'Proceed',
+            'Akceptuj wszystkie', 'Akceptuj', 'Zaakceptuj', 'Zgadzam się', 'Akceptuję',
+            'Accept',
+        ];
         const btns = Array.from(document.querySelectorAll('button, a, input[type="button"], input[type="submit"]'));
         const target = btns.find(b => texts.some(t => (b.textContent || '').trim().toLowerCase().includes(t.toLowerCase())));
         if (target) target.click();
