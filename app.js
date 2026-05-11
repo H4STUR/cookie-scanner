@@ -160,7 +160,9 @@ async function runScan(browser, url, parsedUrl) {
     await page.goto(url, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 30000 });
 
     await page.evaluate(() => {
-        const byId = document.getElementById('cc-accept');
+        // AgaresCMS — new (Brave-safe) id first, legacy id as fallback
+        const byId = document.getElementById('sp-accept-all')
+                  || document.getElementById('cc-accept');
         if (byId) { byId.click(); return; }
 
         const texts = [
@@ -179,7 +181,14 @@ async function runScan(browser, url, parsedUrl) {
 
     const trackers = await detectTrackers(page, requestedDomains);
     const rawCookies = await page.cookies();
-    const cookies = rawCookies.map(cookie => normalizeCookie(cookie, parsedUrl.hostname));
+    const seen = new Set();
+    const uniqueCookies = rawCookies.filter(c => {
+        const key = `${c.name}|${c.domain}|${c.path}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+    const cookies = uniqueCookies.map(cookie => normalizeCookie(cookie, parsedUrl.hostname));
 
     const storage = await page.evaluate(() => ({
         localStorage: Object.keys(localStorage).length,
